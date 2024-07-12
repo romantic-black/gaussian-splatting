@@ -77,7 +77,7 @@ def read_next_bytes(fid, num_bytes, format_char_sequence, endian_character="<"):
     :param endian_character: Any of {@, =, <, >, !}
     :return: Tuple of read and unpacked values.
     """
-    data = fid.read(num_bytes)
+    data = fid.read(num_bytes)      # <: 小端对齐, Q: uint64, i: int32, d: double64
     return struct.unpack(endian_character + format_char_sequence, data)
 
 def read_points3D_text(path):
@@ -205,7 +205,7 @@ def read_extrinsics_binary(path_to_model_file):
             xys = np.column_stack([tuple(map(float, x_y_id_s[0::3])),
                                    tuple(map(float, x_y_id_s[1::3]))])
             point3D_ids = np.array(tuple(map(int, x_y_id_s[2::3])))
-            images[image_id] = Image(
+            images[image_id] = Image(   # 不是 PIL 的 Image, 而是作者自定的 name tuple
                 id=image_id, qvec=qvec, tvec=tvec,
                 camera_id=camera_id, name=image_name,
                 xys=xys, point3D_ids=point3D_ids)
