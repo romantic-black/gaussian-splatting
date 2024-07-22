@@ -54,7 +54,6 @@ def render(viewpoint_camera, pc : GaussianModel, pipe, bg_color : torch.Tensor, 
     means2D = screenspace_points    # (N0,3): [[0,0,0], ...]
     opacity = pc.get_opacity        # (N0,1)
 
-    # TODO: 3d covariance 指什么 ?
     # If precomputed 3d covariance is provided, use it. If not, then it will be computed from
     # scaling / rotation by the rasterizer.
     scales = None
@@ -85,7 +84,7 @@ def render(viewpoint_camera, pc : GaussianModel, pipe, bg_color : torch.Tensor, 
     # Rasterize visible Gaussians to image, obtain their radii (on screen). 
     rendered_image, radii = rasterizer(
         means3D = means3D,                  # (N0,3)
-        means2D = means2D,                  # (N0,3): [[0,0,0], ...]
+        means2D = means2D,                  # (N0,3): [[0,0,0], ...], 没用上
         shs = shs,                          # (N0,16,3)
         colors_precomp = colors_precomp,    # shs 的替代, None
         opacities = opacity,                # (N0,1)
